@@ -68,7 +68,7 @@ class LaLigaAPI(object):
         # get from API
         else:
             for w in range(38):
-                response = requests.get(f'{self.HTTPS_DOMAIN_V1}{self.ROUTE_WEEK}/{str(w)}')
+                response = requests.get(f'{self.HTTPS_DOMAIN_V1}{self.ROUTE_WEEK}/{str(w+1)}')
                 week_stats.append(response.json())
 
             with open(self.WEEK_STATS_PATH, 'w') as convert_file:

@@ -1,9 +1,10 @@
 import requests
+import os
 
 class LaLigaPredictor():
 
     HTTPS = 'https://'
-    DOMAIN = '5i18icjipi.execute-api.us-east-1.amazonaws.com/prod'
+    DOMAIN = os.environ['PREDICTOR_DOMAIN'] + '/prod'
     
     ROUTE_PREDICT = '/predict-points'
 

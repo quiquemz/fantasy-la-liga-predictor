@@ -2,6 +2,9 @@ import pandas as pd
 import requests
 import os
 import json
+import pytz
+
+from datetime import datetime
 
 class LaLigaAPI(object):
 
@@ -24,11 +27,16 @@ class LaLigaAPI(object):
     PLAYER_PATH = './data_json/player'
     WEEK_STATS_PATH = './data_json/weeks_stats.json'
 
+    # Spain Timezon
+    TZ_SPAIN = pytz.timezone('Europe/Madrid')
+
+
     def __init__(self) -> None:
         # get list of players ids from file
         self.players = None
         self.week_stats = None
         self.player_stats = None
+        self.player_week_num = None
 
         self.players = self.get_players()
         self.week_stats = self.get_week_stats()
@@ -76,6 +84,23 @@ class LaLigaAPI(object):
         
         return week_stats
     
+    def get_player_next_week_num(self):
+        # Get the current time in Spain
+        now_spain = datetime.now(self.TZ_SPAIN)
+        _, tid, _ = self.get_team()
+
+        for i, week in enumerate(self.week_stats):
+            for game in week:
+                date_string = game['matchDate'][:-1]
+                match_date = datetime.fromisoformat(date_string).replace(tzinfo=pytz.UTC)
+                local = str(game['local']['id'])
+                visit = str(game['visitor']['id'])
+
+                if (str(tid) == local or str(tid) == visit) and match_date >= now_spain:
+                    return i+1
+             
+        return None
+
     def get_players_names(self):
         return list(self.players.keys())
     
@@ -116,6 +141,7 @@ class LaLigaAPI(object):
                 convert_file.write(json.dumps(player_stats))
 
         self.player_stats = player_stats
+        self.player_week_num = self.get_player_next_week_num()
 
     def get_team(self):
         tname = self.player_stats['team']['name']
@@ -133,8 +159,8 @@ class LaLigaAPI(object):
         
         return 0
     
-    def get_as_local(self, week_num):
-        matchday = self.week_stats[week_num-1]
+    def get_as_local(self):
+        matchday = self.week_stats[self.player_week_num-1]
         team_id = int(self.get_team()[1])
 
         for match in matchday:
@@ -146,8 +172,8 @@ class LaLigaAPI(object):
             
         return 0
     
-    def get_opponent(self, week_num):
-        matchday = self.week_stats[week_num-1]
+    def get_opponent(self):
+        matchday = self.week_stats[self.player_week_num-1]
         team_id = int(self.get_team()[1])
 
         for match in matchday:

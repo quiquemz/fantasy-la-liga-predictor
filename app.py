@@ -2,7 +2,7 @@ from la_liga_api import LaLigaAPI
 from predictor import LaLigaPredictor
 import streamlit as st
 
-WEEK_NUM = 25
+# WEEK_NUM = 26
 
 def check_password():
     """Returns `True` if the user had the correct password."""
@@ -51,8 +51,8 @@ if check_password():
     team, team_id, team_img = la_liga_api.get_team()
     cum_points = la_liga_api.get_cum_points()
     avg_points = la_liga_api.get_avg_points()
-    as_local = la_liga_api.get_as_local(WEEK_NUM)
-    opponent, opponent_id, opponent_img = la_liga_api.get_opponent(WEEK_NUM)
+    as_local = la_liga_api.get_as_local()
+    opponent, opponent_id, opponent_img = la_liga_api.get_opponent()
 
     # prediction
     prediction = predictor.get_prediction(player_id, team_id, cum_points, avg_points, as_local, opponent_id)

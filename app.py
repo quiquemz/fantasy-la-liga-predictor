@@ -32,6 +32,7 @@ def check_password():
         # Password correct.
         return True
 
+# APP
 if check_password():
     # APIs
     la_liga_api = LaLigaAPI()
@@ -58,9 +59,9 @@ if check_password():
     st.write('Predicted score for next match', prediction)
     st.write('Accumulated score', cum_points)
     st.write('Average score', avg_points)
-    st.write(team, 'versus', opponent)
+    st.markdown(f'Next Opponent: :blue[{opponent}]')
     # st.image([team_img, opponent_img])
-    st.write('Playing as local:', f'{"yes" if as_local else "no"}')
+    st.markdown(f'Playing as local {":green[yes]" if as_local else ":red[no]"}')
 
     # historical results
     st.header(f'Historical Total Points')

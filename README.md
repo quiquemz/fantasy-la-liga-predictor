@@ -25,7 +25,12 @@ The model uses the following features to predict the performance of a player in 
 
 ## Usage
 
-To use the model, access the website at http://54.144.240.197:8501/ and enter the name or ID of the player. The model will return a recommendation on whether to buy or not based on the player's predicted performance in the next match.
+## Usage
+
+To use the app, you will need to deploy the Lambda functions and API Gateway as described in the Architecture section. Once you have deployed the necessary resources, you can run the app using the following command:
+`streamlit run app.py`
+
+This will start the Streamlit app, which you can access by navigating to http://localhost:8501 in your web browser. From there, you can enter the name or ID of a player and the app will return a recommendation on whether to buy or not based on the player's predicted performance in the next match.
 
 ## Contributors
 

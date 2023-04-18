@@ -12,7 +12,7 @@ The architecture pipeline of the project is as follows:
 4. **Model Training**: Train model using SageMaker and save it on S3
 5. **Model Deployment**: Deploy model to a SageMaker Serverless instance
 
-
+![Architecture](https://raw.githubusercontent.com/quiquemz/fantasy-la-liga-predictor/main/public/architecture_ml.jpg "Architecture")
 
 ## Features
 

@@ -8,8 +8,9 @@ The architecture pipeline of the project is as follows:
 
 1. **Data Extraction**: Extract data from Fantasy LaLiga API with Lambda Function
 2. **Data Storage**: Store raw data on S3
-3. **Data Transformation**: This triggers a function app that initializes AWS Glue to transform the data by cleaning and performing feature engineering and storing this final dataset on S3
+3. **Data Transformation**: This triggers a function app that initializes a Sagemaker Notebook to transform the data by cleaning and performing feature engineering and storing this final dataset on S3
 4. **Model Training**: Train model using SageMaker and save it on S3
+5. **Model Deployment**: Deploy model to a SageMaker Serverless instance
 
 ## Features
 

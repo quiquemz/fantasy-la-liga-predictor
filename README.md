@@ -12,6 +12,8 @@ The architecture pipeline of the project is as follows:
 4. **Model Training**: Train model using SageMaker and save it on S3
 5. **Model Deployment**: Deploy model to a SageMaker Serverless instance
 
+
+
 ## Features
 
 The model uses the following features to predict the performance of a player in the next match:

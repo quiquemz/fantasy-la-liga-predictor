@@ -26,17 +26,6 @@ The model uses the following features to predict the performance of a player in 
 
 To use the model, access the website at http://54.144.240.197:8501/ and enter the name or ID of the player. The model will return a recommendation on whether to buy or not based on the player's predicted performance in the next match.
 
-## Cost
-
-The project's cost depends on the usage of the following AWS services:
-
-- Lambda
-- S3
-- AWS Glue
-- SageMaker
-
-The cost can be optimized by setting up cost allocation tags, enabling cost explorer, and monitoring the usage of the services.
-
 ## Contributors
 
 - [Quique Mendez](https://github.com/quiquemz)

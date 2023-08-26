@@ -1,4 +1,4 @@
-from la_liga_api import LaLigaAPI
+from src.apis.la_liga_api import LaLigaAPI
 from predictor import LaLigaPredictor
 import streamlit as st
 

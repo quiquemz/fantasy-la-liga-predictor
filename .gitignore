@@ -1,8 +1,11 @@
 .streamlit
 .ipynb_checkpoints
 __pycache__
+.venv
 venv
+env
 .DS_Store
-data_json
-data_csv
+data
 *.pem
+.python-version
+.pytest_cache

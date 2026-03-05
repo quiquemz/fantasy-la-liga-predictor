@@ -14,7 +14,7 @@ class LaLigaAPI(object):
 
     # HTTP
     HTTPS = os.getenv('HTTPS', 'https://')
-    DOMAIN = os.getenv('DOMAIN', 'api.laligafantasymarca.com')
+    DOMAIN = os.getenv('DOMAIN', 'api-fantasy.llt-services.com')
 
     # V1
     V1 = os.getenv('V1', '/stats/v1')

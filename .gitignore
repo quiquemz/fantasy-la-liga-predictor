@@ -9,3 +9,4 @@ data
 *.pem
 .python-version
 .pytest_cache
+.env

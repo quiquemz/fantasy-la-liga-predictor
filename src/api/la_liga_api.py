@@ -120,7 +120,7 @@ class LaLigaAPI(object):
         try:
             print(f"Fetching fixtures for weeks 1-{WEEKS_TOTAL}...")
             all_matches = []
-            
+
             def fetch_week(week_num):
                 try:
                     matches = self.api_v1.request(f"{self.ROUTE_WEEK}/{week_num}")
@@ -134,25 +134,30 @@ class LaLigaAPI(object):
                 except Exception as e:
                     print(f"Error fetching week {week_num}: {e}")
                     return []
-            
+
             # Fetch all weeks in parallel
             with ThreadPoolExecutor(max_workers=20) as executor:
-                futures = {executor.submit(fetch_week, w): w for w in range(1, WEEKS_TOTAL + 1)}
+                futures = {
+                    executor.submit(fetch_week, w): w for w in range(1, WEEKS_TOTAL + 1)
+                }
                 completed = 0
-                
+
                 for future in as_completed(futures):
                     week_matches = future.result()
                     all_matches.extend(week_matches)
                     completed += 1
                     if completed % 10 == 0:
                         print(f"Fetched {completed}/{WEEKS_TOTAL} weeks")
-            
-            print(f"Successfully fetched {len(all_matches)} total matches from all weeks")
+
+            print(
+                f"Successfully fetched {len(all_matches)} total matches from all weeks"
+            )
             return all_matches
-            
+
         except Exception as e:
             print(f"Error fetching all weeks: {e}")
             import traceback
+
             traceback.print_exc()
             return []
 
@@ -169,9 +174,7 @@ class LaLigaAPI(object):
 
             # Ensure team_id is an integer for comparison
             team_id = int(team_id) if team_id else None
-            print(
-                f"Searching for team {team_id} across {len(all_matches)} matches"
-            )
+            print(f"Searching for team {team_id} across {len(all_matches)} matches")
 
             # Debug: collect all team IDs
             all_team_ids = set()
@@ -196,7 +199,10 @@ class LaLigaAPI(object):
                 visitor_id = match.get("visitor", {}).get("id")
 
                 # Skip matches that already have scores (past matches)
-                if match.get("localScore") is not None or match.get("visitorScore") is not None:
+                if (
+                    match.get("localScore") is not None
+                    or match.get("visitorScore") is not None
+                ):
                     continue
 
                 if local_id == team_id or visitor_id == team_id:
@@ -217,6 +223,44 @@ class LaLigaAPI(object):
 
             traceback.print_exc()
             return None
+
+    def get_match_date_formatted(self):
+        """Get formatted date and time for next match."""
+        if not self.current_player_id:
+            return "N/A", "N/A"
+
+        team_id = int(self.get_team()[1]) if self.get_team()[1] else None
+        match = self.get_next_match_for_team(team_id)
+
+        if not match:
+            return "N/A", "N/A"
+
+        try:
+            date_str = match.get("date", "")
+            if date_str:
+                dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+                # Convert to Spain timezone
+                dt_spain = dt.astimezone(self.TZ_SPAIN)
+                date_formatted = dt_spain.strftime("%a, %d %b")
+                time_formatted = dt_spain.strftime("%H:%M")
+                return date_formatted, time_formatted
+        except Exception as e:
+            print(f"Error formatting match date: {e}")
+
+        return "N/A", "N/A"
+
+    def get_match_week_number(self):
+        """Get week number of next match."""
+        if not self.current_player_id:
+            return "N/A"
+
+        team_id = int(self.get_team()[1]) if self.get_team()[1] else None
+        match = self.get_next_match_for_team(team_id)
+
+        if not match:
+            return "N/A"
+
+        return match.get("weekNumber", "N/A")
 
     # ============== APP-FRIENDLY METHODS ==============
 
@@ -286,7 +330,24 @@ class LaLigaAPI(object):
 
         team_name = team.get("name", "Unknown")
         team_id = team.get("id", None)
-        badge_img = team.get("badgecolor", "")  # or badgeColor
+
+        # Try to get badge from player data first, then from matches
+        badge_img = team.get("badgecolor", "") or team.get("badgeColor", "")
+
+        # If no badge in player data, try to get it from the match data
+        if not badge_img and team_id:
+            try:
+                match = self.get_next_match_for_team(team_id)
+                if match:
+                    local_id = match.get("local", {}).get("id")
+                    if local_id == team_id:
+                        badge_img = match.get("local", {}).get("badgeColor", "")
+                    else:
+                        visitor_id = match.get("visitor", {}).get("id")
+                        if visitor_id == team_id:
+                            badge_img = match.get("visitor", {}).get("badgeColor", "")
+            except:
+                pass
 
         return team_name, team_id, badge_img
 

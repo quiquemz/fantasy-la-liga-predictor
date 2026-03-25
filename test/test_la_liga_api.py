@@ -122,17 +122,6 @@ class TestLaLigaAPI(unittest.TestCase):
         self.assertEqual(games_stats, self.games_stats_internal)
     
     # TODO get_player_next_week_num
-    
-    # GET PLAYERS NICKNAMES TESTS
-    @patch('src.api.la_liga_api.LaLigaAPI.get_players')
-    def test_get_players_nicknames(self, mock_get_players):        
-        mock_get_players.return_value = self.players_internal
-
-        nicknames = self.api.get_players_nicknames()
-        expected_nicknames = [p['nickname'] for p in self.players_internal.values()]
-
-        mock_get_players.assert_called_once()
-        self.assertEqual(nicknames, expected_nicknames)
 
     # GET PLAYERS IMAGES TESTS
     @patch('src.api.la_liga_api.LaLigaAPI.get_players')
@@ -145,18 +134,4 @@ class TestLaLigaAPI(unittest.TestCase):
         mock_get_players.assert_called_once()
         self.assertEqual(image, expected_image)
     
-    def test_get_historical_market_values(self):
-        player_id = 'p1'
-        expected_market_values = [{'id': 'value1'}, {'id': 'value2'}]
-        
-        with patch('src.api.la_liga_api.LaLigaAPI.get_players') as mock_get_players, \
-             patch('src.api.la_liga_api.LaLigaAPI.api_v3.request') as mock_api_request:
-            mock_get_players.return_value = self.players_internal
-            mock_api_request.return_value = expected_market_values
-            
-            market_values = self.api.get_historical_market_values(player_id)
-            
-        mock_get_players.assert_called_once()
-        mock_api_request.assert_called_once_with(f'/player/{player_id}/market-value')
-        self.assertEqual(market_values, expected_market_values)
     

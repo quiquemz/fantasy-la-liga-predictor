@@ -2,6 +2,45 @@
 
 Fantasy La Liga Predictor is a machine learning model that provides users with accurate and timely recommendations on which players to purchase and at what price, ultimately helping users to create a winning Fantasy team for the Spanish football league, La Liga.
 
+## Screenshots
+
+### Home Screen - Player Selection & Stats
+
+![App Home Screen](./assets/app-home.png)
+The main interface shows the La Liga Fantasy Predictor with:
+
+- 🔍 Search box to quickly find players among 957 available options
+- Real-time filtered list showing matching players
+- Player statistics: Total Points, Avg/Match, Playing as (Home/Away), Current Week
+- Team badge displayed inline with team name
+
+### Next Match Tab
+
+![Next Match Details](./assets/app-next-match.png)
+Displays upcoming fixture information:
+
+- Opponent team with badge
+- Match date and time (converted to Spain timezone)
+- Current matchday/week number
+
+### Statistics Tab
+
+![Player Statistics](./assets/app-statistics.png)
+Performance analytics:
+
+- Total career points and average points per match
+- Prediction for next match (±15% variance)
+- Confidence level (High/Medium/Low)
+- Home/Away advantage analysis
+
+### History Tab
+
+![Historical Data](./assets/app-history.png)
+Charts and trends:
+
+- Points by week (bar chart)
+- Market value trend over time (line chart)
+
 ## Architecture
 
 The architecture pipeline of the project is as follows:
@@ -39,8 +78,6 @@ This will start the Streamlit app, which you can access by navigating to http://
 - [Ka Ho Wan](https://www.linkedin.com/in/terrancewankaho/)
 - [Bob Bury](https://www.linkedin.com/in/bob-bury-/)
 - [Liza Shaban](https://www.linkedin.com/in/liza-shaban-%F0%9F%87%BA%F0%9F%87%A6-791336190/)
-
-
 
 ## License
 
